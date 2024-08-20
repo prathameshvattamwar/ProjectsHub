@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projects Hub - Home</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.0/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.0/ScrollTrigger.min.js"></script>
+    <!-- <link rel="stylesheet" href="css/styles.css"> Link to your custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <script src="https://kit.fontawesome.com/37df75b44e.js" crossorigin="anonymous"></script> <!-- FontAwesome -->
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="#"><i class="fas fa-code"></i> Projects Hub</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="#home"><i class="fas fa-home"></i> Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#about"><i class="fas fa-info-circle"></i> About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#services"><i class="fas fa-cogs"></i> Services</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#why-choose-us"><i class="fas fa-question-circle"></i> Why Choose Us</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#features"><i class="fas fa-star"></i> Features</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#contact"><i class="fas fa-envelope"></i> Contact Us</a>
+                    </li>
+                    <li class="nav-item" id="dashboardLink" style="display: none;">
+                        <a class="nav-link" href="#"><i class="fas fa-user"></i> My Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="btn btn-primary" id="uploadProjectBtn"><i class="fas fa-upload"></i> Upload Project</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="loginBtn"><i class="fas fa-sign-in-alt"></i> Login</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Home Section -->
+    <section id="home" class="hero">
+        <div class="container text-center">
+            <h1>Showcase Your Projects, Explore New Ideas</h1>
+            <p>Join a community of developers and share your work with the world.</p>
+            <a href="#" class="btn btn-outline-light btn-lg mr-2 herobtn" id="exploreProjectsBtn"><i class="fas fa-eye"></i> Explore Projects</a>
+            <a href="#" class="btn btn-purple btn-lg herobtn" id="uploadProjectsBtn"><i class="fas fa-upload"></i> Upload Projects</a>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="section">
+        <div class="container text-center">
+            <h2>About Us</h2>
+            <p>We are a community of passionate developers who love to share our work and collaborate on projects.</p>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="section bg-dark text-white">
+        <div class="container text-center">
+            <h2>Our Services</h2>
+            <p>We offer a variety of services to help developers showcase their work and collaborate with others.</p>
+        </div>
+    </section>
+
+    <!-- Why Choose Us Section -->
+    <section id="why-choose-us" class="section">
+        <div class="container text-center">
+            <h2>Why Choose Us</h2>
+            <p>We provide a platform that makes it easy for developers to share their projects and collaborate with others.</p>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="section bg-dark text-white">
+        <div class="container text-center">
+            <h2>Features</h2>
+            <p>Explore the amazing features we offer to help you get the most out of your projects.</p>
+        </div>
+    </section>
+
+    <!-- Contact Us Section -->
+    <section id="contact" class="section">
+        <div class="container text-center">
+            <h2>Contact Us</h2>
+            <p>Get in touch with us to learn more about our platform or to ask any questions.</p>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container text-center">
+            <p>© 2024 Projects Hub. All rights reserved.</p>
+            <a href="#" class="text-white mr-3">Privacy Policy</a>
+            <a href="#" class="text-white mr-3">Terms of Service</a>
+            <a href="#" class="text-white">Contact Us</a>
+        </div>
+    </footer>
+
+    <!-- Login Modal -->
+    <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="loginModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="loginModalLabel">Login</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="loginForm">
+                        <div class="form-group">
+                            <label for="loginUsername">Username</label>
+                            <input type="text" class="form-control" id="loginUsername" placeholder="Username" autocomplete="off">
+                        </div>
+                        <div class="form-group">
+                            <label for="loginPassword">Password</label>
+                            <input type="password" class="form-control" id="loginPassword" placeholder="Password" autocomplete="off">
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-block">Submit</button>
+                        <div id="loginErrorMessage" class="text-danger mt-2" style="display: none;">User not registered. Please sign up first.</div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <p>Don't have an account? <a href="#" id="switchToRegister">Sign up here</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Registration Modal -->
+    <div class="modal fade" id="registerModal" tabindex="-1" role="dialog" aria-labelledby="registerModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="registerModalLabel">Register</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="registerForm">
+                        <div class="form-group">
+                            <label for="registerFullName">Full Name</label>
+                            <input type="text" class="form-control" id="registerFullName" placeholder="Full Name" autocomplete="off">
+                        </div>
+                        <div class="form-group">
+                            <label for="registerEmail">Email</label>
+                            <input type="email" class="form-control" id="registerEmail" placeholder="Email" autocomplete="off">
+                        </div>
+                        <div class="form-group">
+                            <label for="registerContactNumber">Contact Number</label>
+                            <input type="text" class="form-control" id="registerContactNumber" placeholder="Contact Number" autocomplete="off">
+                        </div>
+                        <div class="form-group">
+                            <label for="registerDOB">Date of Birth</label>
+                            <input type="date" class="form-control" id="registerDOB">
+                        </div>
+                        <div class="form-group">
+                            <label for="registerCity">City</label>
+                            <input type="text" class="form-control" id="registerCity" placeholder="City" autocomplete="off">
+                        </div>
+                        <div class="form-group">
+                            <label for="registerPassword">Password</label>
+                            <input type="password" class="form-control" id="registerPassword" placeholder="Password">
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-block">Submit</button>
+                        <div id="registerErrorMessage" class="text-danger mt-2" style="display: none;">Error in registration. Please try again.</div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+    <!-- <script src="js/main.js"></script> Link to your custom JS -->
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    <script>
+ $(document).ready(function() {
+    // Handle registration form submission
+$('#registerForm').submit(function(event) {
+    event.preventDefault(); // Prevent the default form submission
+    $.ajax({
+        type: "POST",
+        url: "{{ url_for('register') }}",
+        contentType: "application/json",
+        data: JSON.stringify({
+            fullname: $('#registerFullName').val(),
+            email: $('#registerEmail').val(),
+            contact_number: $('#registerContactNumber').val(),
+            dob: $('#registerDOB').val(),
+            city: $('#registerCity').val(),
+            password: $('#registerPassword').val()
+        }),
+        success: function(response) {
+            if (response.success) {
+                $('#registerModal').modal('hide');
+                alert('Registration successful! Please log in.');
+                $('#loginModal').modal('show');
+            } else {
+                $('#registerErrorMessage').show();
+            }
+        },
+        error: function() {
+            $('#registerErrorMessage').show();
+        }
+    });
+});
+
+    // Handle login form submission
+    $('#loginForm').submit(function(event) {
+        event.preventDefault(); // Prevent the default form submission
+        $.ajax({
+            type: "POST",
+            url: "{{ url_for('login') }}",
+            contentType: "application/json",
+            data: JSON.stringify({
+                email: $('#loginUsername').val(),
+                password: $('#loginPassword').val()
+            }),
+            success: function(response) {
+                if (response.success) {
+                    window.location.href = "{{ url_for('dashboard') }}";
+                } else {
+                    $('#loginErrorMessage').show();  // Show error message
+                    $('#loginModal').modal('show');  // Keep the login modal open
+                }
+            },
+            error: function() {
+                $('#loginErrorMessage').show();  // Show error message on error
+                $('#loginModal').modal('show');  // Keep the login modal open
+            }
+        });
+    });
+
+    // Switch to the register modal if the user clicks on the "Sign up here" link
+    $('#switchToRegister').click(function() {
+        $('#loginModal').modal('hide');
+        $('#registerModal').modal('show');
+    });
+});
+
+    </script>
+    
+    
+
+</body>
+</html>
