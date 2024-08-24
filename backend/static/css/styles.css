@@ -204,3 +204,99 @@ footer a:hover {
         font-size: 14px;
     }
 }
+
+/* Sidebar Styles */
+.sidebar {
+    height: 100%;
+    width: 250px;
+    position: fixed;
+    z-index: 1000;
+    top: 0;
+    left: -250px;
+    background-color: #333;
+    overflow-x: hidden;
+    transition: 0.3s;
+    display: flex;
+    flex-direction: column;
+    padding-top: 20px;
+}
+
+.sidebar .sidebar-header {
+    margin-bottom: 30px;
+    text-align: center;
+    font-size: 22px;
+}
+
+.sidebar .user-profile {
+    margin-bottom: 40px;
+    text-align: center;
+}
+
+.sidebar .user-profile i {
+    font-size: 50px;
+    margin-bottom: 10px;
+}
+
+.sidebar .sidebar-nav {
+    list-style: none;
+    padding: 0;
+    flex-grow: 1;
+    margin-bottom: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.sidebar .sidebar-nav li {
+    padding: 10px 0;
+    width: 100%;
+    text-align: center;
+}
+
+.sidebar .sidebar-footer {
+    margin-top: auto;
+    padding-bottom: 20px;
+    text-align: center;
+}
+
+.sidebar a {
+    padding: 10px 15px;
+    text-decoration: none;
+    font-size: 18px;
+    color: #fff;
+    display: block;
+    transition: 0.3s;
+}
+
+.sidebar a:hover {
+    color: #007BFF;
+}
+
+.close-btn {
+    position: absolute;
+    top: 10px;
+    right: 25px;
+    font-size: 36px;
+    background: none;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+}
+
+.main-content {
+    transition: margin-left .3s;
+    margin-left: 0;
+}
+
+.open-btn {
+    font-size: 20px;
+    cursor: pointer;
+    background-color: #333;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    position: fixed;
+    top: 10px;
+    left: 10px;
+    z-index: 1001;
+}

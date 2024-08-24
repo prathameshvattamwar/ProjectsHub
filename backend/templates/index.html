@@ -8,11 +8,11 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.0/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.0/ScrollTrigger.min.js"></script>
-    <!-- <link rel="stylesheet" href="css/styles.css"> Link to your custom CSS -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
     <script src="https://kit.fontawesome.com/37df75b44e.js" crossorigin="anonymous"></script> <!-- FontAwesome -->
 </head>
 <body>
+
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
         <div class="container">
@@ -40,26 +40,36 @@
                     <li class="nav-item">
                         <a class="nav-link" href="#contact"><i class="fas fa-envelope"></i> Contact Us</a>
                     </li>
-                    <li class="nav-item" id="dashboardLink" style="display: none;">
-                        <a class="nav-link" href="#"><i class="fas fa-user"></i> My Dashboard</a>
+
+                    <!-- Show this if the user is logged in -->
+                    {% if username %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="#"><i class="fas fa-user"></i> {{ username }}</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="btn btn-danger" href="{{ url_for('logout') }}"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                    </li>
+                    <!-- Show this if the user is not logged in -->
+                    {% else %}
                     <li class="nav-item">
                         <a class="btn btn-primary" id="uploadProjectBtn"><i class="fas fa-upload"></i> Upload Project</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" id="loginBtn"><i class="fas fa-sign-in-alt"></i> Login</a>
                     </li>
+                    {% endif %}
                 </ul>
             </div>
         </div>
     </nav>
+
 
     <!-- Home Section -->
     <section id="home" class="hero">
         <div class="container text-center">
             <h1>Showcase Your Projects, Explore New Ideas</h1>
             <p>Join a community of developers and share your work with the world.</p>
-            <a href="#" class="btn btn-outline-light btn-lg mr-2 herobtn" id="exploreProjectsBtn"><i class="fas fa-eye"></i> Explore Projects</a>
+            <a href="{{ url_for('dashboard') }}" class="btn btn-outline-light btn-lg mr-2 herobtn" id="exploreProjectsBtn"><i class="fas fa-eye"></i> Explore Projects</a>
             <a href="#" class="btn btn-purple btn-lg herobtn" id="uploadProjectsBtn"><i class="fas fa-upload"></i> Upload Projects</a>
         </div>
     </section>
@@ -189,80 +199,76 @@
         </div>
     </div>
 
-
-
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
-    <!-- <script src="js/main.js"></script> Link to your custom JS -->
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    
     <script>
- $(document).ready(function() {
-    // Handle registration form submission
-$('#registerForm').submit(function(event) {
-    event.preventDefault(); // Prevent the default form submission
-    $.ajax({
-        type: "POST",
-        url: "{{ url_for('register') }}",
-        contentType: "application/json",
-        data: JSON.stringify({
-            fullname: $('#registerFullName').val(),
-            email: $('#registerEmail').val(),
-            contact_number: $('#registerContactNumber').val(),
-            dob: $('#registerDOB').val(),
-            city: $('#registerCity').val(),
-            password: $('#registerPassword').val()
-        }),
-        success: function(response) {
-            if (response.success) {
-                $('#registerModal').modal('hide');
-                alert('Registration successful! Please log in.');
-                $('#loginModal').modal('show');
-            } else {
-                $('#registerErrorMessage').show();
-            }
-        },
-        error: function() {
-            $('#registerErrorMessage').show();
-        }
-    });
-});
-
-    // Handle login form submission
-    $('#loginForm').submit(function(event) {
+    $(document).ready(function() {
+        // Handle registration form submission
+    $('#registerForm').submit(function(event) {
         event.preventDefault(); // Prevent the default form submission
         $.ajax({
             type: "POST",
-            url: "{{ url_for('login') }}",
+            url: "{{ url_for('register') }}",
             contentType: "application/json",
             data: JSON.stringify({
-                email: $('#loginUsername').val(),
-                password: $('#loginPassword').val()
+                fullname: $('#registerFullName').val(),
+                email: $('#registerEmail').val(),
+                contact_number: $('#registerContactNumber').val(),
+                dob: $('#registerDOB').val(),
+                city: $('#registerCity').val(),
+                password: $('#registerPassword').val()
             }),
             success: function(response) {
                 if (response.success) {
-                    window.location.href = "{{ url_for('dashboard') }}";
+                    $('#registerModal').modal('hide');
+                    alert('Registration successful! Please log in.');
+                    $('#loginModal').modal('show');
                 } else {
-                    $('#loginErrorMessage').show();  // Show error message
-                    $('#loginModal').modal('show');  // Keep the login modal open
+                    $('#registerErrorMessage').show();
                 }
             },
             error: function() {
-                $('#loginErrorMessage').show();  // Show error message on error
-                $('#loginModal').modal('show');  // Keep the login modal open
+                $('#registerErrorMessage').show();
             }
         });
     });
 
-    // Switch to the register modal if the user clicks on the "Sign up here" link
-    $('#switchToRegister').click(function() {
-        $('#loginModal').modal('hide');
-        $('#registerModal').modal('show');
+        // Handle login form submission
+        $('#loginForm').submit(function(event) {
+            event.preventDefault(); // Prevent the default form submission
+            $.ajax({
+                type: "POST",
+                url: "{{ url_for('login') }}",
+                contentType: "application/json",
+                data: JSON.stringify({
+                    email: $('#loginUsername').val(),
+                    password: $('#loginPassword').val()
+                }),
+                success: function(response) {
+                    if (response.success) {
+                        window.location.href = "{{ url_for('dashboard') }}";
+                    } else {
+                        $('#loginErrorMessage').show();  // Show error message
+                        $('#loginModal').modal('show');  // Keep the login modal open
+                    }
+                },
+                error: function() {
+                    $('#loginErrorMessage').show();  // Show error message on error
+                    $('#loginModal').modal('show');  // Keep the login modal open
+                }
+            });
+        });
+
+        // Switch to the register modal if the user clicks on the "Sign up here" link
+        $('#switchToRegister').click(function() {
+            $('#loginModal').modal('hide');
+            $('#registerModal').modal('show');
+        });
     });
-});
 
     </script>
-    
-    
 
 </body>
 </html>

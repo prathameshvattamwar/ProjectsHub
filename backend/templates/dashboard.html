@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projects Hub - Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <script src="https://kit.fontawesome.com/37df75b44e.js" crossorigin="anonymous"></script>
+</head>
+<body>
+
+    <!-- Top Navbar -->
+    <nav id="top-navbar" class="navbar navbar-expand-lg navbar-dark fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="{{ url_for('home') }}"><i class="fas fa-code"></i> Projects Hub</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('home') }}"><i class="fas fa-home"></i> Home</a>
+                    </li>
+                    {% if username %}
+                    <li class="nav-item">
+                        <a class="nav-link" id="my-dashboard-link" href="#"><i class="fas fa-user"></i> My Dashboard</a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Personal Dashboard Content -->
+    {% if username %}
+    <div id="personal-dashboard" style="display: none;">
+        <div id="sidebar" class="sidebar">
+            <!-- Logo Section -->
+            <div class="sidebar-header text-center">
+                <a class="navbar-brand" href="{{ url_for('home') }}"><i class="fas fa-code"></i> Projects Hub</a>
+            </div>
+            
+            <!-- User Profile Section -->
+            <div class="user-profile text-center">
+                <i class="fas fa-user-circle fa-3x"></i>
+                <h4>{{ username }}</h4>
+            </div>
+            
+            <!-- Navigation Links Section -->
+            <ul class="sidebar-nav">
+                <li><a href="{{ url_for('home') }}"><i class="fas fa-home"></i> Home</a></li>
+                <li><a href="#profile"><i class="fas fa-user-circle"></i> Profile</a></li>
+                <li><a href="#projects"><i class="fas fa-project-diagram"></i> My Projects</a></li>
+                <li><a href="#analytics"><i class="fas fa-chart-line"></i> Analytics</a></li>
+                <li><a href="#downloads"><i class="fas fa-download"></i> Downloads</a></li>
+                <li><a id="public-dashboard-link" href="#"><i class="fas fa-globe"></i> Public Dashboard</a></li>
+            </ul>
+            
+            <!-- Bottom Section -->
+            <div class="sidebar-footer">
+                <a href="#settings"><i class="fas fa-cog"></i> Settings</a>
+                <a href="{{ url_for('logout') }}" class="btn btn-danger"><i class="fas fa-sign-out-alt"></i> Logout</a>
+            </div>
+            
+            <!-- Close Button -->
+            <button class="close-btn" id="closeBtn">&times;</button>
+        </div>
+
+        <!-- Main Content with Sidebar Open Button -->
+        <div id="main-content" class="main-content">
+            <button class="open-btn" id="openBtn">&#9776; Menu</button>
+            <section class="section" style="padding-top: 80px;">
+                <div class="container text-center">
+                    <h2>Welcome, {{ username }}</h2>
+                    <p>This is your dashboard where you can manage your projects and account.</p>
+                </div>
+            </section>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Public Dashboard Content -->
+    <div id="public-dashboard">
+        <section class="section" style="padding-top: 80px;">
+            <div class="container text-center">
+                {% if username %}
+                <h2>Explore Projects</h2>
+                <p>You are viewing the projects uploaded by users. You can manage your own projects in your personal dashboard.</p>
+                {% else %}
+                <h2>Explore Projects</h2>
+                <p>You are viewing the projects uploaded by users. Log in to upload your own projects.</p>
+                {% endif %}
+            </div>
+        </section>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+</body>
+</html>

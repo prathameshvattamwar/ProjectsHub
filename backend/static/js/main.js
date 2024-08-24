@@ -63,6 +63,10 @@ document.addEventListener("DOMContentLoaded", function() {
         $('#loginModal').modal('show');
     });
 
+    $("#uploadProjectBtn").on('click',function(){
+        $('#loginModal').modal('show');
+    });
+
     // Validate Login Form
     document.getElementById("loginForm").addEventListener("submit", function(event) {
         event.preventDefault();
@@ -70,8 +74,7 @@ document.addEventListener("DOMContentLoaded", function() {
         let password = document.getElementById("loginPassword").value;
 
         if (!username || !password) {
-            document.getElementById("loginErrorMessage").style.display = "block";
-            document.getElementById("loginErrorMessage").innerText = "Please fill in all fields.";
+            displayLoginError("Please fill in all fields.");
         } else {
             checkUserInDatabase(username, password);
         }
@@ -89,22 +92,29 @@ document.addEventListener("DOMContentLoaded", function() {
         let password = document.getElementById("registerPassword").value;
 
         if (!fullName) {
-            displayError("Full Name should not be blank.");
+            displayRegisterError("Full Name should not be blank.");
         } else if (!validateEmail(email)) {
-            displayError("Please enter a valid email address.");
+            displayRegisterError("Please enter a valid email address.");
         } else if (!dob) {
-            displayError("Please select your Date of Birth.");
+            displayRegisterError("Please select your Date of Birth.");
         } else if (!city) {
-            displayError("City Name should not be blank.");
+            displayRegisterError("City Name should not be blank.");
         } else if (!validatePassword(password)) {
-            displayError("Password should be at least 6 characters long and must contain at least one lowercase letter, one uppercase letter, one special character, and one digit.");
+            displayRegisterError("Password should be at least 6 characters long and must contain at least one lowercase letter, one uppercase letter, one special character, and one digit.");
         } else {
             registerUserInDatabase(fullName, email, contactNumber, dob, city, password);
         }
     });
 
-    // Utility function to display error messages
-    function displayError(message) {
+    // Utility function to display login error messages
+    function displayLoginError(message) {
+        const errorMsg = document.getElementById("loginErrorMessage");
+        errorMsg.style.display = "block";
+        errorMsg.innerText = message;
+    }
+
+    // Utility function to display registration error messages
+    function displayRegisterError(message) {
         const errorMsg = document.getElementById("registerErrorMessage");
         errorMsg.style.display = "block";
         errorMsg.innerText = message;
@@ -122,32 +132,59 @@ document.addEventListener("DOMContentLoaded", function() {
         return passwordPattern.test(password);
     }
 
-    // Simulate checking user in database
+    // Check user in database via AJAX request
     function checkUserInDatabase(username, password) {
-        // Replace with actual AJAX request to your server
-        let userExists = false; // Example: Assume user does not exist
-
-        if (!userExists) {
-            document.getElementById("loginErrorMessage").style.display = "block";
-            document.getElementById("loginErrorMessage").innerText = "User not registered. Please sign up first.";
-            $('#loginModal').modal('hide');
-            $('#registerModal').modal('show');
-        } else {
-            window.location.href = "/dashboard"; // Replace with actual redirect
-        }
+        fetch('/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ email: username, password: password })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                // Redirect to home instead of dashboard
+                window.location.href = "/";
+            } else {
+                displayLoginError("User not registered or incorrect password. Please try again or sign up.");
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            displayLoginError("An error occurred. Please try again.");
+        });
     }
 
-    // Simulate user registration
+    // Register user in database via AJAX request
     function registerUserInDatabase(fullName, email, contactNumber, dob, city, password) {
-        // Replace with actual AJAX request to your server
-        let registrationSuccess = true; // Example: Assume registration is successful
-
-        if (registrationSuccess) {
-            alert("Registration successful! Redirecting to dashboard...");
-            window.location.href = "/dashboard"; // Replace with actual redirect
-        } else {
-            displayError("Registration failed. Please try again.");
-        }
+        fetch('/register', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                fullname: fullName,
+                email: email,
+                contact_number: contactNumber,
+                dob: dob,
+                city: city,
+                password: password
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert("Registration successful! Redirecting to home...");
+                window.location.href = "/";
+            } else {
+                displayRegisterError("Registration failed. Please try again.");
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            displayRegisterError("An error occurred. Please try again.");
+        });
     }
 
 });
