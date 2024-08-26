@@ -54,4 +54,22 @@ document.addEventListener("DOMContentLoaded", function() {
             section.style.display = section.id === 'home-content' ? 'block' : 'none';
         });
     });
+
+    // Handle "Upload a Project" link click
+    document.getElementById("uploadProjectLink").addEventListener("click", function(e) {
+        e.preventDefault();
+        // Show the upload project section
+        document.getElementById('upload-project-content').style.display = 'block';
+        document.getElementById('my-projects-content').style.display = 'none';
+    });
+
+    // Handle "Explore Projects" link click
+    document.getElementById("exploreProjectsLink").addEventListener("click", function(e) {
+        e.preventDefault();
+        // You can redirect to the public dashboard or another section
+        window.location.href = "/dashboard#public-dashboard-content";
+    });
+
+    // Default view when loading the dashboard
+    document.getElementById('home-content').style.display = 'block';
 });

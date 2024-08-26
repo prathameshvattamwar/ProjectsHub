@@ -16,8 +16,12 @@ class Project(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(150), nullable=False)
     description = db.Column(db.Text, nullable=False)
-    category = db.Column(db.String(100), nullable=False)  # e.g., Frontend, Backend, etc.
+    category = db.Column(db.String(100), nullable=False)
+    github_link = db.Column(db.String(255), nullable=True)
+    file_path = db.Column(db.String(255), nullable=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    likes = db.Column(db.Integer, default=0)
+    favorites = db.Column(db.Integer, default=0)
 
     def __repr__(self):
         return f'<Project {self.title}>'

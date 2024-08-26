@@ -152,7 +152,7 @@ footer a:hover {
 .btn-primary {
     background-color: #002244;
     border-color: #002244;
-    padding: 10px 0;
+    padding: 10px 15px;
     font-size: 16px;
 }
 
@@ -176,7 +176,6 @@ footer a:hover {
     font-size: 14px;
     display: none;
 }
-
 
 /* Responsive Adjustments */
 @media (max-width: 768px) {
@@ -222,7 +221,6 @@ footer a:hover {
     transition: 0.3s;
     display: flex;
     flex-direction: column;
-    /* padding-top: 20px; */
 }
 
 .sidebar .sidebar-header {
@@ -259,7 +257,6 @@ footer a:hover {
 
 .sidebar .sidebar-footer {
     margin-top: auto;
-    /* padding-bottom: 20px; */
     text-align: center;
 }
 
@@ -304,3 +301,32 @@ footer a:hover {
     left: 10px;
     z-index: 1001;
 }
+
+.card {
+    background-color: #222;
+    border: none;
+}
+
+.card-title {
+    color: #8e44ad;
+}
+
+.card-text {
+    color: #bbbbbb;
+}
+
+.card-body .btn {
+    margin-right: 5px;
+    margin-bottom: 5px;
+}
+
+.btn-outline-dark {
+    color: #8e44ad;
+    border-color: #8e44ad;
+}
+
+.btn-outline-dark:hover {
+    background-color: #8e44ad;
+    color: #fff;
+}
+

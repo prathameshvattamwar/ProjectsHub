@@ -78,15 +78,64 @@
                     <p>This is your dashboard where you can manage your projects and account.</p>
                 </div>
 
-                <!-- Hidden content sections -->
-                <div id="profile-content" class="container text-center content-section" style="display:none;">
-                    <h2>Your Profile</h2>
-                    <p>Profile management content goes here.</p>
-                </div>
-
+                <!-- My Projects Section -->
                 <div id="my-projects-content" class="container content-section" style="display:none;">
                     <h2>My Projects</h2>
-                    <p>You have no projects yet. <a href="#">Explore Projects</a> or <a href="#">Upload a Project</a>.</p>
+                    {% if projects %}
+                        <div class="row">
+                            {% for project in projects %}
+                                <div class="col-md-4">
+                                    <div class="card mb-4">
+                                        <div class="card-body">
+                                            <h5 class="card-title">{{ project.title }}</h5>
+                                            <p class="card-text">{{ project.description }}</p>
+                                            <p class="card-text"><strong>Category:</strong> {{ project.category }}</p>
+                                            <a href="{{ project.github_link }}" class="btn btn-outline-dark btn-sm" target="_blank"><i class="fas fa-code-branch"></i> GitHub</a>
+                                            {% if project.file_path %}
+                                            <a href="{{ url_for('download_project', project_id=project.id) }}" class="btn btn-outline-dark btn-sm"><i class="fas fa-download"></i> Download</a>
+                                            {% endif %}
+                                            <a href="#" class="btn btn-outline-dark btn-sm"><i class="fas fa-heart"></i> Like</a>
+                                            <a href="#" class="btn btn-outline-dark btn-sm"><i class="fas fa-star"></i> Favorite</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <p>You have no projects yet.</p>
+                    {% endif %}
+                    <div class="mt-4">
+                        <a href="#" id="uploadProjectLink" class="btn btn-primary">Upload a Project</a>
+                        <a href="#" id="exploreProjectsLink" class="btn btn-secondary">Explore Projects</a>
+                    </div>
+                </div>
+                
+                <!-- Upload Project Form -->
+                <div id="upload-project-content" class="container content-section" style="display:none;">
+                    <h2>Upload a New Project</h2>
+                    <form action="{{ url_for('upload_project') }}" method="POST" enctype="multipart/form-data">
+                        <div class="form-group">
+                            <label for="title">Project Title</label>
+                            <input type="text" class="form-control" name="title" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="description">Project Description</label>
+                            <textarea class="form-control" name="description" rows="3" required></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="category">Category</label>
+                            <input type="text" class="form-control" name="category" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="github_link">GitHub Link (optional)</label>
+                            <input type="text" class="form-control" name="github_link">
+                        </div>
+                        <div class="form-group">
+                            <label for="project_file">Upload Project (ZIP file, optional)</label>
+                            <input type="file" class="form-control" name="project_file">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Upload Project</button>
+                    </form>
                 </div>
 
                 <!-- Add other content sections similarly -->

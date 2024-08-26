@@ -1,14 +1,20 @@
 import os
-from flask import Flask, render_template, request, redirect, url_for, session, jsonify
-from models import db, User, Project  # Import the db, User, and Project models
+from flask import Flask, render_template, request, redirect, url_for, session, jsonify, flash
+from models import db, User, Project
 import bcrypt
+from flask import send_from_directory
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'your_secret_key'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///C:/Users/ADMIN/Documents/Prathamesh/Python/ProjectsHub/backend/instance/users.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(os.path.abspath(os.path.dirname(__file__)), 'instance', 'users.db')
+app.config['UPLOAD_FOLDER'] = os.path.join(app.root_path, 'uploads')
 
 # Initialize SQLAlchemy with the app
 db.init_app(app)
+
+# Ensure the uploads folder exists
+if not os.path.exists(app.config['UPLOAD_FOLDER']):
+    os.makedirs(app.config['UPLOAD_FOLDER'])
 
 # Home route
 @app.route('/')
@@ -87,22 +93,46 @@ def upload_project():
     if 'user_id' not in session:
         return redirect(url_for('home'))
 
-    data = request.json
+    data = request.form
     user_id = session['user_id']
+
+    # Handle file upload
+    file = request.files.get('project_file')
+    github_link = data.get('github_link')
+    project_file_path = None
+
+    if file:
+        file_name = f"{user_id}_{file.filename}"
+        project_file_path = os.path.join(UPLOAD_FOLDER, file_name)
+        file.save(project_file_path)
+    
     new_project = Project(
         title=data['title'],
         description=data['description'],
         category=data['category'],
+        github_link=github_link if github_link else None,
+        file_path=project_file_path if project_file_path else None,
         user_id=user_id
     )
     try:
         db.session.add(new_project)
         db.session.commit()
-        return jsonify({"success": True})
+        return jsonify({"success": True, "message": "Project uploaded successfully!"})
     except Exception as e:
         db.session.rollback()
         print(f"Error during project upload: {str(e)}")
-        return jsonify({"success": False})
+        return jsonify({"success": False, "message": "There was an error uploading the project."})
+
+from flask import send_from_directory
+
+@app.route('/download_project/<int:project_id>')
+def download_project(project_id):
+    project = Project.query.get_or_404(project_id)
+    if project.file_path:
+        return send_from_directory(directory=app.config['UPLOAD_FOLDER'], path=os.path.basename(project.file_path), as_attachment=True)
+    else:
+        flash("No file associated with this project.", "warning")
+        return redirect(url_for('my_dashboard'))
 
 # Initialize the database and add a test user
 if __name__ == "__main__":
