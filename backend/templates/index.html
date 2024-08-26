@@ -13,8 +13,8 @@
 </head>
 <body>
 
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+     <!-- Navbar -->
+     <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
         <div class="container">
             <a class="navbar-brand" href="#"><i class="fas fa-code"></i> Projects Hub</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -41,7 +41,6 @@
                         <a class="nav-link" href="#contact"><i class="fas fa-envelope"></i> Contact Us</a>
                     </li>
 
-                    <!-- Show this if the user is logged in -->
                     {% if username %}
                     <li class="nav-item">
                         <a class="nav-link" href="#"><i class="fas fa-user"></i> {{ username }}</a>
@@ -49,7 +48,6 @@
                     <li class="nav-item">
                         <a class="btn btn-danger" href="{{ url_for('logout') }}"><i class="fas fa-sign-out-alt"></i> Logout</a>
                     </li>
-                    <!-- Show this if the user is not logged in -->
                     {% else %}
                     <li class="nav-item">
                         <a class="btn btn-primary" id="uploadProjectBtn"><i class="fas fa-upload"></i> Upload Project</a>
@@ -63,7 +61,6 @@
         </div>
     </nav>
 
-
     <!-- Home Section -->
     <section id="home" class="hero">
         <div class="container text-center">
@@ -73,6 +70,8 @@
             <a href="#" class="btn btn-purple btn-lg herobtn" id="uploadProjectsBtn"><i class="fas fa-upload"></i> Upload Projects</a>
         </div>
     </section>
+
+    <input type="hidden" id="isLoggedIn" value="{{ 'true' if username else 'false' }}">
 
     <!-- About Section -->
     <section id="about" class="section">
@@ -204,36 +203,61 @@
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>
     
     <script>
-    $(document).ready(function() {
-        // Handle registration form submission
-    $('#registerForm').submit(function(event) {
-        event.preventDefault(); // Prevent the default form submission
-        $.ajax({
-            type: "POST",
-            url: "{{ url_for('register') }}",
-            contentType: "application/json",
-            data: JSON.stringify({
-                fullname: $('#registerFullName').val(),
-                email: $('#registerEmail').val(),
-                contact_number: $('#registerContactNumber').val(),
-                dob: $('#registerDOB').val(),
-                city: $('#registerCity').val(),
-                password: $('#registerPassword').val()
-            }),
-            success: function(response) {
-                if (response.success) {
-                    $('#registerModal').modal('hide');
-                    alert('Registration successful! Please log in.');
-                    $('#loginModal').modal('show');
-                } else {
-                    $('#registerErrorMessage').show();
-                }
-            },
-            error: function() {
-                $('#registerErrorMessage').show();
+        $(document).ready(function() {
+        // Get the login status from the hidden input
+        const isLoggedIn = $('#isLoggedIn').val() === 'true';
+
+        // Handle "Upload Projects" button click
+        $("#uploadProjectsBtn").on('click', function(e) {
+            e.preventDefault();
+            if (isLoggedIn) {
+                // Redirect to "My Projects" section in the dashboard
+                window.location.href = "{{ url_for('dashboard') }}#my-projects-content";
+            } else {
+                $('#loginModal').modal('show'); // Show the login modal
             }
         });
-    });
+
+        // Handle "Upload Project" button click in the navbar
+        $("#uploadProjectBtn").on('click', function(e) {
+            e.preventDefault();
+            if (isLoggedIn) {
+                // Redirect to "My Projects" section in the dashboard
+                window.location.href = "{{ url_for('dashboard') }}#my-projects-content";
+            } else {
+                $('#loginModal').modal('show'); // Show the login modal
+            }
+        });
+
+        // Handle registration form submission
+        $('#registerForm').submit(function(event) {
+            event.preventDefault(); // Prevent the default form submission
+            $.ajax({
+                type: "POST",
+                url: "{{ url_for('register') }}",
+                contentType: "application/json",
+                data: JSON.stringify({
+                    fullname: $('#registerFullName').val(),
+                    email: $('#registerEmail').val(),
+                    contact_number: $('#registerContactNumber').val(),
+                    dob: $('#registerDOB').val(),
+                    city: $('#registerCity').val(),
+                    password: $('#registerPassword').val()
+                }),
+                success: function(response) {
+                    if (response.success) {
+                        $('#registerModal').modal('hide');
+                        alert('Registration successful! Please log in.');
+                        $('#loginModal').modal('show');
+                    } else {
+                        $('#registerErrorMessage').show();
+                    }
+                },
+                error: function() {
+                    $('#registerErrorMessage').show();
+                }
+            });
+        });
 
         // Handle login form submission
         $('#loginForm').submit(function(event) {
@@ -267,8 +291,8 @@
             $('#registerModal').modal('show');
         });
     });
-
     </script>
+        
 
 </body>
 </html>

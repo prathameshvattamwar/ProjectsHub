@@ -35,11 +35,11 @@
 
     <!-- Personal Dashboard Content -->
     {% if username %}
-    <div id="personal-dashboard" style="display: none;">
+    <div id="personal-dashboard" style="display: block;">
         <div id="sidebar" class="sidebar">
             <!-- Logo Section -->
             <div class="sidebar-header text-center">
-                <a class="navbar-brand" href="{{ url_for('home') }}"><i class="fas fa-code"></i> Projects Hub</a>
+                <a class="navbar-brand" href="#"><i class="fas fa-code"></i> Projects Hub</a>
             </div>
             
             <!-- User Profile Section -->
@@ -50,17 +50,17 @@
             
             <!-- Navigation Links Section -->
             <ul class="sidebar-nav">
-                <li><a href="{{ url_for('home') }}"><i class="fas fa-home"></i> Home</a></li>
-                <li><a href="#profile"><i class="fas fa-user-circle"></i> Profile</a></li>
-                <li><a href="#projects"><i class="fas fa-project-diagram"></i> My Projects</a></li>
-                <li><a href="#analytics"><i class="fas fa-chart-line"></i> Analytics</a></li>
-                <li><a href="#downloads"><i class="fas fa-download"></i> Downloads</a></li>
-                <li><a id="public-dashboard-link" href="#"><i class="fas fa-globe"></i> Public Dashboard</a></li>
+                <li><a href="#" data-target="home-content"><i class="fas fa-home"></i> Home</a></li>
+                <li><a href="#" data-target="profile-content"><i class="fas fa-user-circle"></i> Profile</a></li>
+                <li><a href="#" data-target="my-projects-content"><i class="fas fa-project-diagram"></i> My Projects</a></li>
+                <li><a href="#" data-target="analytics-content"><i class="fas fa-chart-line"></i> Analytics</a></li>
+                <li><a href="#" data-target="downloads-content"><i class="fas fa-download"></i> Downloads</a></li>
+                <li><a href="#" data-target="public-dashboard-content"><i class="fas fa-globe"></i> Public Dashboard</a></li>
             </ul>
             
             <!-- Bottom Section -->
             <div class="sidebar-footer">
-                <a href="#settings"><i class="fas fa-cog"></i> Settings</a>
+                <a href="#" data-target="settings-content"><i class="fas fa-cog"></i> Settings</a>
                 <a href="{{ url_for('logout') }}" class="btn btn-danger"><i class="fas fa-sign-out-alt"></i> Logout</a>
             </div>
             
@@ -70,31 +70,44 @@
 
         <!-- Main Content with Sidebar Open Button -->
         <div id="main-content" class="main-content">
-            <button class="open-btn" id="openBtn">&#9776; Menu</button>
-            <section class="section" style="padding-top: 80px;">
-                <div class="container text-center">
+            <button class="open-btn" id="openBtn" style="display: none;">&#9776;</button>
+            <section id="content-container" class="section" style="padding-top: 80px;">
+                <!-- Default content -->
+                <div id="home-content" class="container text-center content-section">
                     <h2>Welcome, {{ username }}</h2>
                     <p>This is your dashboard where you can manage your projects and account.</p>
+                </div>
+
+                <!-- Hidden content sections -->
+                <div id="profile-content" class="container text-center content-section" style="display:none;">
+                    <h2>Your Profile</h2>
+                    <p>Profile management content goes here.</p>
+                </div>
+
+                <div id="my-projects-content" class="container content-section" style="display:none;">
+                    <h2>My Projects</h2>
+                    <p>You have no projects yet. <a href="#">Explore Projects</a> or <a href="#">Upload a Project</a>.</p>
+                </div>
+
+                <!-- Add other content sections similarly -->
+                <div id="analytics-content" class="container content-section" style="display:none;">
+                    <h2>Analytics</h2>
+                    <p>Analytics data goes here.</p>
+                </div>
+
+                <div id="downloads-content" class="container content-section" style="display:none;">
+                    <h2>Downloads</h2>
+                    <p>Downloadable content goes here.</p>
+                </div>
+
+                <div id="settings-content" class="container content-section" style="display:none;">
+                    <h2>Settings</h2>
+                    <p>Settings management goes here.</p>
                 </div>
             </section>
         </div>
     </div>
     {% endif %}
-
-    <!-- Public Dashboard Content -->
-    <div id="public-dashboard">
-        <section class="section" style="padding-top: 80px;">
-            <div class="container text-center">
-                {% if username %}
-                <h2>Explore Projects</h2>
-                <p>You are viewing the projects uploaded by users. You can manage your own projects in your personal dashboard.</p>
-                {% else %}
-                <h2>Explore Projects</h2>
-                <p>You are viewing the projects uploaded by users. Log in to upload your own projects.</p>
-                {% endif %}
-            </div>
-        </section>
-    </div>
 
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>

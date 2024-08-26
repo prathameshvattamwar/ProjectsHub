@@ -1,5 +1,4 @@
 document.addEventListener("DOMContentLoaded", function() {
-
     // Smooth Scrolling for Navbar Links
     $(".navbar-nav a").on('click', function(event) {
         if (this.hash !== "") {
@@ -46,6 +45,9 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     });
 
+    // Determine if the user is logged in
+    const isLoggedIn = document.getElementById("isLoggedIn").value === 'true';
+
     // Trigger Login Modal
     $("#loginBtn").on('click', function() {
         $('#loginModal').modal('show');
@@ -58,13 +60,15 @@ document.addEventListener("DOMContentLoaded", function() {
         $('#registerModal').modal('show');
     });
 
-    // Trigger Login Modal via Upload Project button
-    $("#uploadProjectsBtn").on('click', function() {
-        $('#loginModal').modal('show');
-    });
-
-    $("#uploadProjectBtn").on('click',function(){
-        $('#loginModal').modal('show');
+    // Trigger Login Modal via Upload Project button if not logged in
+    $("#uploadProjectsBtn").on('click', function(e) {
+        e.preventDefault();
+        if (isLoggedIn) {
+            // Redirect to the "My Projects" section within the dashboard
+            window.location.href = "/dashboard#my-projects-content";
+        } else {
+            $('#loginModal').modal('show'); // Show the login modal
+        }
     });
 
     // Validate Login Form
@@ -144,8 +148,7 @@ document.addEventListener("DOMContentLoaded", function() {
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                // Redirect to home instead of dashboard
-                window.location.href = "/";
+                window.location.href = "/"; // Redirect to home instead of dashboard
             } else {
                 displayLoginError("User not registered or incorrect password. Please try again or sign up.");
             }
@@ -186,5 +189,4 @@ document.addEventListener("DOMContentLoaded", function() {
             displayRegisterError("An error occurred. Please try again.");
         });
     }
-
 });
