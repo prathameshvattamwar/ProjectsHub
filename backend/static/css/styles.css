@@ -12,14 +12,12 @@ body {
 }
 
 section {
-    height: 100vh; /* Each section takes up the full viewport height */
+    min-height: 100vh;
+    height: auto; /* Each section takes up the full viewport height */
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 50px 20px;
-}
-
-.section {
+    padding: 20px !important;
     background-color: #222;
     color: #ffffff;
 }
@@ -302,22 +300,44 @@ footer a:hover {
     z-index: 1001;
 }
 
+/* Project Card Styles */
 .card {
-    background-color: #222;
+    background-color: #333;
+    color: #fff;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: none;
     border: none;
+    padding-bottom: 10px;
 }
 
 .card-title {
+    font-size: 1.5rem;
     color: #8e44ad;
+    margin-bottom: 10px;
 }
 
 .card-text {
-    color: #bbbbbb;
+    font-size: 1rem;
+    margin-bottom: 10px;
+}
+
+.card-text:nth-child(3),
+.card-text:nth-child(4){
+    font-size: 12px;
 }
 
 .card-body .btn {
-    margin-right: 5px;
-    margin-bottom: 5px;
+    background-color: #444; /* Button background */
+    color: #fff; /* Button text */
+    border: none; /* No border */
+}
+
+.card-img-top {
+    height: auto; /* Adjust to fit content */
+    max-width: 100%; /* Ensure it doesn’t overflow */
+    border-bottom: 2px solid #444; /* Separator line under image */
+    aspect-ratio: 1;
 }
 
 .btn-outline-dark {
@@ -330,3 +350,23 @@ footer a:hover {
     color: #fff;
 }
 
+.counts{
+    display: flex;
+    gap: 10px;
+    font-size: 15px;
+}
+
+#my-projects-content{
+    min-height: 95vh;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .card {
+        padding: 15px;
+    }
+
+    .card-title {
+        font-size: 1.25rem;
+    }
+}
